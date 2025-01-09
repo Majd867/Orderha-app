@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'product.dart';
 
 class Friend extends StatelessWidget {
   @override
@@ -37,6 +38,14 @@ class FriendPage extends StatefulWidget {
 }
 
 class _FriendPageState extends State<FriendPage> {
+  String productName = '';
+  String productPrice = '';
+  String imageUrl = '';
+
+  void goToProductInfo(){
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Product()));
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,22 +90,22 @@ class _FriendPageState extends State<FriendPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 '   Chicken roasto.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 'Mushroom Soup.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
@@ -132,22 +141,22 @@ class _FriendPageState extends State<FriendPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 '  Pepperoni Pizza.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 'Crispy Meal.      ',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),

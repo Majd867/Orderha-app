@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'package:orderha/home.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 class CreateAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,26 +26,27 @@ class CreateAccountPage extends StatefulWidget {
 
 class CreateAccountPageState extends State<CreateAccountPage> {
   final _formKey = GlobalKey<FormState>();
-  // File? _profileImage;
-  // final ImagePicker _picker = ImagePicker();
-  //
-  // Future<void> _pickImage() async {
-  //   final XFile? pickedImage = await _picker.pickImage(
-  //     source: ImageSource.gallery,
-  //     imageQuality: 50,
-  //   );
-  //
-  //   if (pickedImage != null) {
-  //     setState(() {
-  //       _profileImage = File(pickedImage.path);
-  //     });
-  //   }
-  // }
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final XFile? pickedImage = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+    );
+
+    if (pickedImage != null) {
+      setState(() {
+        profileImage = File(pickedImage.path);
+      });
+    }
+  }
 
   String firstName = '';
   String lastName = '';
   String phone = '';
   String location = '';
+  File? profileImage;
   String password = '';
   void _createAccount() {
     if (_formKey.currentState!.validate()) {
@@ -91,8 +92,26 @@ class CreateAccountPageState extends State<CreateAccountPage> {
               ),
             ),
           ),
+          Expanded(
+            child: GestureDetector(
+              onTap: _pickImage, // Trigger image picker on tap
+              child: CircleAvatar(
+                radius: 60,
+                backgroundImage: profileImage != null
+                    ? FileImage(profileImage!) // Display selected image
+                    : null,
+                child: profileImage == null
+                    ? Icon(
+                  Icons.camera_alt,
+                  size: 35,
+                  color: Colors.grey[700],
+                )
+                    : null,
+              ),
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: TextFormField(
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person),
@@ -116,7 +135,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: TextFormField(
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person),
@@ -140,7 +159,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: TextFormField(
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.phone),
@@ -165,7 +184,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: TextFormField(
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.location_pin),
@@ -189,7 +208,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: TextFormField(
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.lock),
@@ -213,44 +232,8 @@ class CreateAccountPageState extends State<CreateAccountPage> {
               }
             ),
           ),
-          // GestureDetector(
-          //   onTap: _pickImage, // Trigger image picker on tap
-          //   child: CircleAvatar(
-          //     radius: 60,
-          //     backgroundImage: _profileImage != null
-          //         ? FileImage(_profileImage!) // Display selected image
-          //         : null,
-          //     child: _profileImage == null
-          //         ? Icon(
-          //       Icons.camera_alt,
-          //       size: 40,
-          //       color: Colors.grey[700],
-          //     )
-          //         : null,
-          //   ),
-          // ),
-          // Padding(
-          //    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-          //    child: TextFormField(
-          //      decoration: InputDecoration(
-          //        prefixIcon: Icon(Icons.image),
-          //        border: OutlineInputBorder(),
-          //        hintText: 'Your Image',
-          //      ),
-          //    ),
-          //  ),
-          //  Padding(
-          //    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-          //    child: TextFormField(
-          //      decoration: InputDecoration(
-          //        prefixIcon: Icon(Icons.location_pin),
-          //        border: OutlineInputBorder(),
-          //        hintText: 'Your location',
-          //      ),
-          //    ),
-          //  ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             child: Container(
               color: Colors.deepOrange,
               height: 62.0,

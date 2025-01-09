@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:orderha/product.dart';
 
 class FrenchCorner extends StatelessWidget {
   @override
@@ -37,6 +38,14 @@ class FrenchCornerPage extends StatefulWidget {
 }
 
 class _FrenchCornerPageState extends State<FrenchCornerPage> {
+  String productName = '';
+  String productPrice = '';
+  String imageUrl = '';
+
+  void goToProductInfo(){
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Product()));
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -83,22 +92,22 @@ class _FrenchCornerPageState extends State<FrenchCornerPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 '  Burger Sandwich.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 'Torino Sandwich.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
@@ -134,22 +143,22 @@ class _FrenchCornerPageState extends State<FrenchCornerPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 '      Chicken Sap.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 'Crispy Meal.      ',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),

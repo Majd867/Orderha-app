@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'product.dart';
 
 class SuperStar extends StatelessWidget {
   @override
@@ -37,6 +38,14 @@ class SuperStarPage extends StatefulWidget {
 }
 
 class _SuperStarPageState extends State<SuperStarPage> {
+  String productName = '';
+  String productPrice = '';
+  String imageUrl = '';
+
+  void goToProductInfo(){
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Product()));
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,22 +90,22 @@ class _SuperStarPageState extends State<SuperStarPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 '  Burger Sandwich.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 'Buffalo Chicken.  ',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
@@ -132,22 +141,22 @@ class _SuperStarPageState extends State<SuperStarPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 '   Zinger Sandwich.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 'Chicken vip Meal.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),

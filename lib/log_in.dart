@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 'Orderha',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 50.0,
+                  fontSize: 60.0,
                   fontFamily: 'Lobster',
                   color: Colors.white,
                 ),

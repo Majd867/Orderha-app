@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'product.dart';
 class AbuRateb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,14 @@ class AbuRatebPage extends StatefulWidget {
 }
 
 class _AbuRatebPageState extends State<AbuRatebPage> {
+  String productName = '';
+  String productPrice = '';
+  String imageUrl = '';
+
+  void goToProductInfo(){
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Product()));
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,22 +89,22 @@ class _AbuRatebPageState extends State<AbuRatebPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 '  Burger Sandwich.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 'Syrian Kibbeh.    ',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
@@ -132,22 +140,22 @@ class _AbuRatebPageState extends State<AbuRatebPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 '   Chicken Prosted.',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {goToProductInfo();},
               child: Text(
                 'Shawarma Meal.  ',
                 style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                   color: Colors.blueAccent,
                   fontWeight: FontWeight.bold,
                 ),

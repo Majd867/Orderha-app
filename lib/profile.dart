@@ -7,11 +7,31 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   CreateAccountPageState yourAccount = CreateAccountPageState();
+  //method to apply logging out from backend
+  void logOut(){
+
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: CircleAvatar(
+              radius: 80,
+              backgroundImage: yourAccount.profileImage != null
+                  ? FileImage(yourAccount.profileImage!) // Display selected image
+                  : null,
+              child: yourAccount.profileImage == null
+                  ? Icon(
+                Icons.person,
+                size: 140,
+                color: Colors.grey[700],
+              )
+                  : null,
+            ),
+          ),
           Card(
             color: Colors.deepOrange,
             margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
@@ -76,6 +96,25 @@ class _ProfileState extends State<Profile> {
                 style: TextStyle(
                   fontSize: 19.0,
                   color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: TextButton(
+                onPressed: (){
+                  logOut();
+                },
+                child: Text(
+                  'Log out  ',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent,
+                  ),
                 ),
               ),
             ),
