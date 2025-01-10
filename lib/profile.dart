@@ -43,7 +43,7 @@ class _ProfileState extends State<Profile> {
               title: Text(
                 "Your Fisrt name: ${yourAccount.firstName}",
                 style: TextStyle(
-                  fontSize: 19.0,
+                  fontSize: 15.0,
                   color: Colors.white,
                 ),
               ),
@@ -60,7 +60,7 @@ class _ProfileState extends State<Profile> {
               title: Text(
                 "Your Last name: ${yourAccount.lastName}",
                 style: TextStyle(
-                  fontSize: 19.0,
+                  fontSize: 15.0,
                   color: Colors.white,
                 ),
               ),
@@ -77,7 +77,7 @@ class _ProfileState extends State<Profile> {
               title: Text(
                 "Your Phone number: ${yourAccount.phone}",
                 style: TextStyle(
-                  fontSize: 19.0,
+                  fontSize: 15.0,
                   color: Colors.white,
                 ),
               ),
@@ -94,7 +94,7 @@ class _ProfileState extends State<Profile> {
               title: Text(
                 "Your Location: ${yourAccount.location}",
                 style: TextStyle(
-                  fontSize: 19.0,
+                  fontSize: 15.0,
                   color: Colors.white,
                 ),
               ),
@@ -111,7 +111,7 @@ class _ProfileState extends State<Profile> {
                 child: Text(
                   'Log out  ',
                   style: TextStyle(
-                    fontSize: 25.0,
+                    fontSize: 22.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.blueAccent,
                   ),

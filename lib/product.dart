@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:orderha/model.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:orderha/product.dart';
 class Product extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,24 +16,43 @@ class Product extends StatelessWidget {
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 27.0,
-          ),
+            ),
           ),
         ),
-      backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.deepOrange,
       ),
-      body: ProductInfo(),
+      body: ProductPage(),
     );
   }
 }
-class ProductInfo extends StatefulWidget {
+
+class ProductPage extends StatefulWidget {
   @override
-  State<ProductInfo> createState() => _ProductInfoState();
+  State<ProductPage> createState() => _ProductPageState();
 }
 
-class _ProductInfoState extends State<ProductInfo> {
+class _ProductPageState extends State<ProductPage> {
   String productName = '';
   String productPrice = '';
   String imageUrl = '';
+  int id = 0;
+  int counter = 1;
+  int counterValue() {
+    setState(() {
+      counter++;
+    });
+    return counter;
+  }
+  int counterReset(){
+    setState(() {
+      counter = 1;
+    });
+    return counter;
+  }
+
+  ProductInfo addToCart(int id ,int counter){
+    return ProductInfo(id, counter);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +95,71 @@ class _ProductInfoState extends State<ProductInfo> {
                   ),
                 ),
               ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Quantinty:   ',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20.0,
+                ),
+              ),
+              Text(
+                counter.toString(),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25.0,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  counterValue();
+                },
+                child: Icon(
+                  Icons.add,
+                ),
+              ),
+              TextButton(
+                onPressed: (){
+                  counterReset();
+                },
+                child: Text('Reset',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                  ),
+                ))
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Center(
+              child: Container(
+                color: Colors.blue,
+                height: 62.0,
+                width: 200.0,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                  ),
+                  onPressed: () {
+                    addToCart(id, counter);
+                    counterReset();
+                  },
+                  child: Text(
+                    'Add To Cart.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],
