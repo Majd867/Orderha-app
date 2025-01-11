@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'homePage_info.dart';
 import 'profile.dart';
+import 'search.dart';
+import 'cart.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -30,6 +32,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.deepOrange,
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -41,7 +44,7 @@ class _HomeState extends State<Home> {
         selectedItemColor: Colors.white, // Sets selected label and icon color
         unselectedItemColor: Colors.grey.shade800, // Sets unselected label and icon color
         selectedLabelStyle: TextStyle(
-          fontSize: 16, // Change selected label font size
+          fontSize: 19.0, // Change selected label font size
           fontWeight: FontWeight.bold, // Make the selected label bold
         ),
         unselectedLabelStyle: TextStyle(
@@ -51,21 +54,29 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-            Icons.home,
-            color: Colors.white,
-            size: 40.0,
-            ), label: 'Home'),
+              Icons.home,
+              color: Colors.white,
+              size: 40.0,
+            ), label: 'Home',
+          ),
           BottomNavigationBarItem(
             icon: Icon(
-            Icons.shopping_cart,
-            size: 40.0,
-            color: Colors.white,
-            ), label: 'Cart'),
+              Icons.search,
+              color: Colors.white,
+              size: 40,
+            ), label: 'Search',
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.shopping_cart,
+                size: 40.0,
+                color: Colors.white,
+              ), label: 'Cart'),
           BottomNavigationBarItem(
             icon: Icon(
-            Icons.person,
-            size: 40.0,
-            color: Colors.white,
+              Icons.person,
+              size: 40.0,
+              color: Colors.white,
             ), label: 'Profile',
 
           ),
@@ -80,9 +91,10 @@ class _HomeState extends State<Home> {
           });
         },
         children: [
-          Center(child: HomePage(),),
-          Center(child: Text('Cart Page', style: TextStyle(fontSize: 24))),
-          Center(child: Profile(),),
+          Center(child: HomePage()),
+          Center(child: Search()),
+          Center(child: Cart()),
+          Center(child: Profile()),
         ],
       ),
     );
@@ -97,7 +109,5 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return HomepageInfo();
-
   }
 }
-//HomepageInfo()

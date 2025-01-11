@@ -101,7 +101,9 @@ class _SuperStarPageState extends State<SuperStarPage> {
               ),
             ),
             TextButton(
-              onPressed: () {goToProductInfo();},
+              onPressed: () {
+                goToProductInfo();
+              },
               child: Text(
                 'Buffalo Chicken.  ',
                 style: TextStyle(

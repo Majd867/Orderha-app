@@ -90,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                     borderSide: BorderSide(color: Colors.white),
                   ),
                 ),
+                keyboardType: TextInputType.phone,
                 style: TextStyle(color: Colors.white),
                 validator: (value) {
                   if (value == null || value.length != 10) {

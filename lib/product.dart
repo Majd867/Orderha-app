@@ -54,6 +54,16 @@ class _ProductPageState extends State<ProductPage> {
     return ProductInfo(id, counter);
   }
 
+  bool _showCheckIcon = false;
+  void onButtonPressed() async{
+    setState(() {
+      _showCheckIcon = true;
+    });
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      _showCheckIcon = false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -138,8 +148,7 @@ class _ProductPageState extends State<ProductPage> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Center(
-              child: Container(
-                color: Colors.blue,
+              child: SizedBox(
                 height: 62.0,
                 width: 200.0,
                 child: ElevatedButton(
@@ -147,10 +156,17 @@ class _ProductPageState extends State<ProductPage> {
                     backgroundColor: Colors.blue,
                   ),
                   onPressed: () {
+                    onButtonPressed();
                     addToCart(id, counter);
                     counterReset();
                   },
-                  child: Text(
+                  child: _showCheckIcon
+                    ? Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 40.0,
+                      )
+                    : Text(
                     'Add To Cart.',
                     style: TextStyle(
                       color: Colors.white,
