@@ -1,14 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'create_account.dart';
 import 'log_in.dart';
 import 'history.dart';
+
 class Profile extends StatefulWidget {
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  CreateAccountPageState yourAccount = CreateAccountPageState();
+
   //method to apply logging out from backend
   void logOut(BuildContext context){
     ScaffoldMessenger.of(context).showSnackBar(
@@ -18,6 +19,7 @@ class _ProfileState extends State<Profile> {
         MaterialPageRoute(builder: (context) => LogIn())
     );
   }
+
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -29,17 +31,17 @@ class _ProfileState extends State<Profile> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: Text('Cancel'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor : Colors.red, // background color
+                backgroundColor : Colors.red,
               ),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                logOut(context); // Perform logout action
+                Navigator.of(context).pop();
+                logOut(context);
               },
               child: Text('Yes', style: TextStyle(color: Colors.white),),
             ),
@@ -48,6 +50,12 @@ class _ProfileState extends State<Profile> {
       },
     );
   }
+  //Variables that needs to be taken from the data base:
+  String firstName = '';
+  String lastName = '';
+  String location = '';
+  String phoneNumber = '';
+  File? profileImage;
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +66,10 @@ class _ProfileState extends State<Profile> {
             padding: const EdgeInsets.all(20.0),
             child: CircleAvatar(
               radius: 80,
-              backgroundImage: yourAccount.profileImage != null
-                  ? FileImage(yourAccount.profileImage!) // Display selected image
+              backgroundImage: profileImage != null
+                  ? FileImage(profileImage!)
                   : null,
-              child: yourAccount.profileImage == null
+              child: profileImage == null
                   ? Icon(
                 Icons.person,
                 size: 140,
@@ -79,7 +87,7 @@ class _ProfileState extends State<Profile> {
 
               ),
               title: Text(
-                "Your Fisrt name: ${yourAccount.firstName}",
+                "Your First name: $firstName",
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.white,
@@ -96,7 +104,7 @@ class _ProfileState extends State<Profile> {
 
               ),
               title: Text(
-                "Your Last name: ${yourAccount.lastName}",
+                "Your Last name: $lastName",
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.white,
@@ -113,7 +121,7 @@ class _ProfileState extends State<Profile> {
 
               ),
               title: Text(
-                "Your Phone number: ${yourAccount.phone}",
+                "Your Phone number: $phoneNumber",
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.white,
@@ -130,7 +138,7 @@ class _ProfileState extends State<Profile> {
 
               ),
               title: Text(
-                "Your Location: ${yourAccount.location}",
+                "Your Location: $location",
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.white,
