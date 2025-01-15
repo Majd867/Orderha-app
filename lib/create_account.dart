@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:orderha/controller/register_controller.dart';
+import 'package:orderha/log_in.dart';
+import 'package:orderha/model/register_model.dart';
 import 'home.dart';
 import 'package:orderha/home.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
 class CreateAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.deepOrange,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CreateAccountPage(),
-          ),
+      backgroundColor: Colors.deepOrange,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CreateAccountPage(),
         ),
-      );
+      ),
+    );
   }
 }
+
 class CreateAccountPage extends StatefulWidget {
-
-
   @override
   State<CreateAccountPage> createState() => CreateAccountPageState();
 }
 
 class CreateAccountPageState extends State<CreateAccountPage> {
   final _formKey = GlobalKey<FormState>();
-
   final ImagePicker _picker = ImagePicker();
+  final UserController _userController = UserController(); // Instantiate the controller
+
+  String firstName = '';
+  String lastName = '';
+  String phone = '';
+  String password = '';
+  File? profileImage;
 
   Future<void> _pickImage() async {
     final XFile? pickedImage = await _picker.pickImage(
@@ -42,42 +51,37 @@ class CreateAccountPageState extends State<CreateAccountPage> {
     }
   }
 
-  String firstName = '';
-  String lastName = '';
-  String phone = '';
-  String location = '';
-  File? profileImage;
-  String password = '';
   void _createAccount() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print('First Name: $firstName');
-      print('Last Name: $lastName');
-      print('Phone: $phone');
-      print('Location: $location');
-      print('Password: $password');
+      final user = UserModel(
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        password: password,
+      );
+      _userController.register(user); // Use the controller to register the user
       Navigator.push(
         context,
-            MaterialPageRoute(builder:(context) => Home()),
+        MaterialPageRoute(builder: (context) => LogIn()),
       );
     }
   }
 
-      @override
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-
       child: Column(
         children: [
           Row(
             children: [
               TextButton(
                 child: Icon(Icons.arrow_back),
-                onPressed: (){
-                Navigator.pop(context);
+                onPressed: () {
+                  Navigator.pop(context);
                 },
-               ),
+              ),
             ],
           ),
           Expanded(
@@ -131,7 +135,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
               },
               onSaved: (value) {
                 firstName = value!;
-              }
+              },
             ),
           ),
           Padding(
@@ -155,7 +159,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
               },
               onSaved: (value) {
                 lastName = value!;
-              }
+              },
             ),
           ),
           Padding(
@@ -180,31 +184,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
               },
               onSaved: (value) {
                 phone = value!;
-              }
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            child: TextFormField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.location_pin),
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter your Location',
-                  hintStyle: TextStyle(color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
-                style: TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your Location';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  location = value!;
-                }
+              },
             ),
           ),
           Padding(
@@ -229,7 +209,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
               },
               onSaved: (value) {
                 password = value!;
-              }
+              },
             ),
           ),
           Padding(
@@ -239,16 +219,17 @@ class CreateAccountPageState extends State<CreateAccountPage> {
               height: 62.0,
               width: 200.0,
               child: ElevatedButton(
-                  onPressed: () {
-                    _createAccount();
-                  },
-                  child: Text(
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    'Create',
-                  )),
+                onPressed: () {
+                  _createAccount();
+                },
+                child: Text(
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  'Create',
+                ),
+              ),
             ),
           ),
           Expanded(
@@ -258,9 +239,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
             ),
           ),
         ],
-
       ),
     );
-
   }
 }

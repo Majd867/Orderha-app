@@ -1,36 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:orderha/product.dart';
-
-class FrenchCorner extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: Colors.deepOrange,
-        title: Expanded(
-          child: Center(
-            child: Text(
-              'French Corner         ',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 27.0,
-              ),
-            ),
-          ),
-        ),
-      ),
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FrenchCornerPage(),
-        ),
-      ),
-    );
-  }
-}
+import 'package:orderha/model/Product.dart';
+import 'package:orderha/product.dart' as prod;
+import 'controller/product_controller.dart';
 
 class FrenchCornerPage extends StatefulWidget {
   @override
@@ -38,135 +9,87 @@ class FrenchCornerPage extends StatefulWidget {
 }
 
 class _FrenchCornerPageState extends State<FrenchCornerPage> {
-  String productName = '';
-  String productPrice = '';
-  String imageUrl = '';
+  late Future<List<Product>> futureProducts;
 
-  void goToProductInfo(){
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => Product()));
+  @override
+  void initState() {
+    super.initState();
+    futureProducts = ProductService().fetchProducts() as Future<List<Product>>;
   }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Center(
-            child: Image.asset('images/French corner.jpg'),
-          ),
-        ),
-        Text(
-          'Our Menu:',
-          style: TextStyle(
-            fontFamily: 'Lobster',
-            fontSize: 35.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Row(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('French Corner'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-                child: Image.asset(
-                  'food_images/french corner Burger.jpg',
-                  width: 140.0,
-                  height: 140.0,
-                ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Center(
+                child: Image.asset('images/French corner.jpg'),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-                child: Image.asset(
-                  'food_images/french corner Torino.jpg',
-                  width: 140.0,
-                  height: 140.0,
-                ),
+            Text(
+              'Our Menu:',
+              style: TextStyle(
+                fontFamily: 'Lobster',
+                fontSize: 35.0,
+                fontWeight: FontWeight.bold,
               ),
+            ),
+            FutureBuilder<List<Product>>(
+              future: futureProducts,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Text('No products available');
+                }
+
+                // Filter products by store_id
+                final products = snapshot.data!.where((product) => product.storeId == 1).toList();
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return ListTile(
+                      title: Text(product.name),
+                      subtitle: Text(product.description,style: TextStyle(fontSize: 13),),
+                      leading: Image.asset('images/French corner.jpg'),
+                      trailing:Text('\$${product.price}') ,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => prod.ProductPage(
+                              productDescription: product.description,
+                              productName: product.name,
+                              productPrice: '\$${product.price}',
+                              imageUrl:'images/French corner.jpg' ,
+                              productId: product.id,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-              onPressed: () {goToProductInfo();},
-              child: Text(
-                '  Burger Sandwich.',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {goToProductInfo();},
-              child: Text(
-                'Torino Sandwich.',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-                child: Image.asset(
-                  'food_images/french corner Chicken sap.jpg',
-                  width: 140.0,
-                  height: 140.0,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0.0),
-                child: Image.asset(
-                  'food_images/french corner Crispy Meal.jpg',
-                  width: 140.0,
-                  height: 140.0,
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-              onPressed: () {goToProductInfo();},
-              child: Text(
-                '      Chicken Sap.',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {goToProductInfo();},
-              child: Text(
-                'Crispy Meal.      ',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
+
+
 }

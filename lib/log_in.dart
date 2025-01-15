@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:orderha/controller/login_controller.dart';
 import 'package:orderha/home.dart';
+import 'package:orderha/model/loginModel.dart';
 import 'create_account.dart';
 import 'home.dart';
+
 
 CreateAccount createAccount = CreateAccount();
 
@@ -29,22 +34,41 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final LoginController _loginController = LoginController(); // Instantiate the controller
   String phone = '';
   String password = '';
   String _message = "Sign in";
 
-  void _signIn() {
+  void _signIn() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print('Phone: $phone');
-      print('Password: $password');
-      _message = 'Signed in Succesfully!';
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
+      final request = LoginRequest(
+        phone: phone,
+        password: password,
       );
+      final response = await _loginController.login(request); // Use the controller to login
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _message = 'Signed in Successfully!';
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      } else {
+        final responseData = json.decode(response.body);
+        setState(() {
+          _message = responseData['error'] ?? 'Failed to login. Please check your credentials and try again.';
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_message)),
+        );
+      }
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
             );
           },
           child: Text(
-            'I dont have an account? Sign up',
+              'I don\'t have an account? Sign up',
           ),
         ),
         SizedBox(

@@ -12,9 +12,9 @@ class _HomeState extends State<Home> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
 
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

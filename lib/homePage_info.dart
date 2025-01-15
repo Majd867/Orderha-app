@@ -23,7 +23,7 @@ class _HomepageInfoState extends State<HomepageInfo> {
               ),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => FrenchCorner()));
+                    MaterialPageRoute(builder: (context) => FrenchCornerPage()));
               },
               child: Center(
                 child: Image.asset('images/French corner.jpg'),
