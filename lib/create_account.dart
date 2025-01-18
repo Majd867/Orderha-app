@@ -30,12 +30,14 @@ class CreateAccountPage extends StatefulWidget {
 class CreateAccountPageState extends State<CreateAccountPage> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
-  final UserController _userController = UserController(); // Instantiate the controller
+  final UserController _userController =
+      UserController(); // Instantiate the controller
 
   String firstName = '';
   String lastName = '';
   String phone = '';
   String password = '';
+  String location = '';
   File? profileImage;
 
   Future<void> _pickImage() async {
@@ -58,6 +60,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
         firstName: firstName,
         lastName: lastName,
         phone: phone,
+        location: location,
         password: password,
       );
       _userController.register(user); // Use the controller to register the user
@@ -106,10 +109,10 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                     : null,
                 child: profileImage == null
                     ? Icon(
-                  Icons.camera_alt,
-                  size: 35,
-                  color: Colors.grey[700],
-                )
+                        Icons.camera_alt,
+                        size: 35,
+                        color: Colors.grey[700],
+                      )
                     : null,
               ),
             ),
@@ -184,6 +187,30 @@ class CreateAccountPageState extends State<CreateAccountPage> {
               },
               onSaved: (value) {
                 phone = value!;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            child: TextFormField(
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.location_pin),
+                border: OutlineInputBorder(),
+                hintText: 'Enter your Location',
+                hintStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+              ),
+              style: TextStyle(color: Colors.white),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your location';
+                }
+                return null;
+              },
+              onSaved: (value) {
+                location = value!;
               },
             ),
           ),

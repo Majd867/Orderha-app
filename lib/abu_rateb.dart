@@ -16,7 +16,7 @@ class _AbuRatebState extends State<AbuRateb> {
   @override
   void initState() {
     super.initState();
-    futureProducts = ProductService().fetchProducts() as Future<List<Product>>;
+    futureProducts = ProductService(1).fetchProducts() as Future<List<Product>>;
   }
 
   @override
@@ -55,7 +55,7 @@ class _AbuRatebState extends State<AbuRateb> {
                 }
 
                 // Filter products by store_id
-                final products = snapshot.data!.where((product) => product.storeId == 2).toList();
+                final products = snapshot.data!.where((product) => product.storeId == 1).toList();
 
                 return ListView.builder(
                   shrinkWrap: true,

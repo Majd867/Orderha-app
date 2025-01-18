@@ -13,6 +13,38 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+
+  Future<void> _placeOrder() async {
+    if (token == null) {
+      // تأكد من أن التوكن موجود
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("User not authenticated")),
+      );
+      return;
+    }
+
+    final url = Uri.parse('http://10.0.2.2:8000/api/PlaceOrder'); // نقطة النهاية الخاصة بالـ API
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token', // إرسال التوكن في الرأس
+        'Accept': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = json.decode(response.body);
+      // إظهار رسالة نجاح أو التعامل مع البيانات المسترجعة
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(responseBody['message'])),
+      );
+      // يمكنك إعادة توجيه المستخدم أو تحديث واجهة المستخدم بناءً على البيانات المسترجعة
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to place the order")),
+      );
+    }
+  }
   final CartController _controller = CartController();
   late Future<List<CartModel>> _cartItems = Future.value([]);
   String? token;
@@ -38,7 +70,7 @@ class _CartState extends State<Cart> {
   }
 
   Future<Map<String, dynamic>> _fetchProductDetails(int productId) async {
-    final url = Uri.parse('http://127.0.0.1:8000/api/ShowProduct/$productId');
+    final url = Uri.parse('http://10.0.2.2:8000/api/ShowProduct/$productId');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -192,7 +224,7 @@ class _CartState extends State<Cart> {
             backgroundColor: Colors.blueAccent,
           ),
           onPressed: () {
-            // Implement "Order Now" functionality
+            _placeOrder();
           },
           child: const Text(
             'Order Now',

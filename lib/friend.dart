@@ -16,14 +16,14 @@ class _FriendState extends State<Friend> {
   @override
   void initState() {
     super.initState();
-    futureProducts = ProductService().fetchProducts() as Future<List<Product>>;
+    futureProducts = ProductService(3).fetchProducts() as Future<List<Product>>;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Friends'),
+        title: Text('Friend'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -67,7 +67,7 @@ class _FriendState extends State<Friend> {
                       title: Text(product.name),
                       subtitle: Text(product.description,style: TextStyle(fontSize: 13),),
                       leading: Image.asset('images/French corner.jpg'),
-                      trailing:Text('\$${product.price}') ,
+                      trailing:Text('${product.price}') ,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -75,7 +75,7 @@ class _FriendState extends State<Friend> {
                             builder: (context) => prod.ProductPage(
                               productDescription: product.description,
                               productName: product.name,
-                              productPrice: '\$${product.price}',
+                              productPrice: '${product.price}',
                               imageUrl:'images/French corner.jpg' ,
                               productId: product.id,
                             ),

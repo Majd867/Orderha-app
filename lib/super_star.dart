@@ -16,7 +16,7 @@ class _SuperStarState extends State<SuperStar> {
   @override
   void initState() {
     super.initState();
-    futureProducts = ProductService().fetchProducts() as Future<List<Product>>;
+    futureProducts = ProductService(4).fetchProducts() as Future<List<Product>>;
   }
 
   @override
@@ -55,7 +55,7 @@ class _SuperStarState extends State<SuperStar> {
                 }
 
                 // Filter products by store_id
-                final products = snapshot.data!.where((product) => product.storeId == 3).toList();
+                final products = snapshot.data!.where((product) => product.storeId == 4).toList();
 
                 return ListView.builder(
                   shrinkWrap: true,

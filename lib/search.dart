@@ -1,11 +1,38 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:orderha/model/SearchResult.dart';
 import 'package:orderha/abu_rateb.dart';
 import 'package:orderha/french_corner.dart';
 import 'package:orderha/friend.dart';
-import 'package:orderha/model/SearchResult.dart';
-import 'package:orderha/controller/search_controller.dart' as s;
 import 'package:orderha/product.dart';
 import 'package:orderha/super_star.dart';
+
+class SearchController {
+  final String apiUrl = "http://10.0.2.2:8000/api/Search";
+
+  Future<List<SearchResult>> performSearch({
+    required String query,
+    required String type,
+  }) async {
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+      request.fields['name'] = query;
+      request.fields['type'] = type;
+
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.bytesToString();
+        final List<dynamic> jsonList = json.decode(responseData);
+        return jsonList.map((json) => SearchResult.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch search results');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+}
 
 class Search extends StatefulWidget {
   @override
@@ -14,7 +41,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   final TextEditingController _searchController = TextEditingController();
-  final s.SearchController _searchControllerAPI = s.SearchController();
+  final SearchController _searchControllerAPI = SearchController();
   String _searchCategory = 'Product';
   List<SearchResult> searchResults = [];
   bool isLoading = false;
@@ -25,12 +52,19 @@ class _SearchState extends State<Search> {
     });
 
     try {
+      // Fetch results from the API
       final results = await _searchControllerAPI.performSearch(
         query: _searchController.text,
         type: _searchCategory.toLowerCase(),
       );
+
+      // Additional frontend filtering to ensure accurate results
       setState(() {
-        searchResults = results;
+        searchResults = results
+            .where((result) => result.name
+            .toLowerCase()
+            .contains(_searchController.text.toLowerCase()))
+            .toList();
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -44,7 +78,6 @@ class _SearchState extends State<Search> {
   }
 
   void _navigateToDetails(SearchResult result) {
-    print(_searchCategory.toLowerCase());
     if (_searchCategory.toLowerCase() == 'product') {
       Navigator.push(
         context,
@@ -53,38 +86,34 @@ class _SearchState extends State<Search> {
             imageUrl: result.imageUrl,
             productId: result.id,
             productName: result.name,
-            productPrice: result.price.toString()  ?? 'N/A',
-            productDescription:result.description ,
+            productPrice: result.price?.toString() ?? 'N/A',
+            productDescription: result.description,
           ),
         ),
       );
     } else if (_searchCategory.toLowerCase() == 'store') {
-      print(result.id);
-      if(result.id == 1){
+      if (result.id == 2) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => FrenchCornerPage(),
           ),
         );
-      }
-      if(result.id == 2){
+      } else if (result.id == 3) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => Friend(),
           ),
         );
-      }
-      if(result.id == 3){
+      } else if (result.id == 1) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => AbuRateb(),
           ),
         );
-      }
-      if(result.id == 4){
+      } else if (result.id == 4) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -148,15 +177,25 @@ class _SearchState extends State<Search> {
                   child: Card(
                     margin: EdgeInsets.all(8.0),
                     child: ListTile(
-                      leading: Image.network(
+                      leading: result.imageUrl.isNotEmpty
+                          ? Image.network(
                         result.imageUrl,
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,
-                      ),
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(Icons.broken_image, size: 50);
+                        },
+                      )
+                          : Icon(Icons.image_not_supported, size: 50),
                       title: Text(result.name),
                       subtitle: Text(result.description),
-                      trailing:result.price != 0 ? Text('\$ ${result.price}',style: TextStyle(color: Colors.green),):Text(""),
+                      trailing: result.price != 0
+                          ? Text(
+                        '\$ ${result.price}',
+                        style: TextStyle(color: Colors.green),
+                      )
+                          : Text(""),
                     ),
                   ),
                 );
@@ -167,3 +206,4 @@ class _SearchState extends State<Search> {
     );
   }
 }
+

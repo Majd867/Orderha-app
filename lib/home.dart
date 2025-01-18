@@ -3,6 +3,7 @@ import 'homePage_info.dart';
 import 'profile.dart';
 import 'search.dart';
 import 'cart.dart';
+import 'log_in.dart';
 class Home extends StatefulWidget {
 
   @override
@@ -11,7 +12,49 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
+  //final LogoutController _logoutController = LogoutController(); // Instantiate the controller
 
+  void logOut(BuildContext context) async {
+   // await _logoutController.logout(); // Use the controller to logout
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Logged out successfully!')),
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LogIn()),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Logout'),
+          content: Text('Do you really want to log out?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red, // Background color
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                logOut(context); // Perform logout action
+              },
+              child: Text('Yes', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +62,28 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.deepOrange,
-        title: Center(
-          child: Text(
-            'Orderha',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 35.0,
-              fontFamily: 'Lobster',
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: (){
+                _showLogoutDialog(context);
+              },
+              child: Icon(
+                Icons.more_vert_sharp
+
+              )),
+            Center(
+              child: Text(
+                'Orderha',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 35.0,
+                  fontFamily: 'Lobster',
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

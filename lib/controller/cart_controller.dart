@@ -4,7 +4,7 @@ import 'package:orderha/model/cart_item.dart';
 import 'package:orderha/model/cart_model.dart';
 
 class CartController {
-  static const String _baseUrl = 'http://127.0.0.1:8000/api/AddToCart';
+  static const String _baseUrl = 'http://10.0.2.2:8000/api/AddToCart';
 
   Future<bool> addToCart(CartItem item, String token) async {
     final url = Uri.parse(_baseUrl);
@@ -30,7 +30,7 @@ class CartController {
       return false;
     }
   }
-  final String baseUrl = 'http://127.0.0.1:8000/api';
+  final String baseUrl = 'http://10.0.2.2:8000/api';
 
   Future<List<CartModel>> fetchCartItems(String token) async {
     final response = await http.get(

@@ -5,10 +5,10 @@ import 'package:orderha/model/Product.dart';
 
 class ProductService {
   int id = 0;
-   String apiUrl = 'http://10.0.2.2:8000/api/GetStoreProducts';
-   ProductService(this.id) {
-     apiUrl = 'http://10.0.2.2:8000/api/GetStoreProducts/$id';
-   }
+  String apiUrl = 'http://10.0.2.2:8000/api/GetStoreProducts';
+  ProductService(this.id) {
+    apiUrl = 'http://10.0.2.2:8000/api/GetStoreProducts/$id';
+  }
 
   Future<List<Product>> fetchProducts() async {
     final response = await http.get(Uri.parse(apiUrl));

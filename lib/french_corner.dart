@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orderha/model/Product.dart';
 import 'package:orderha/product.dart' as prod;
+//import 'package:orderha/product.dart';
 import 'controller/product_controller.dart';
 
 class FrenchCornerPage extends StatefulWidget {
@@ -9,12 +10,13 @@ class FrenchCornerPage extends StatefulWidget {
 }
 
 class _FrenchCornerPageState extends State<FrenchCornerPage> {
+
   late Future<List<Product>> futureProducts;
 
   @override
   void initState() {
     super.initState();
-    futureProducts = ProductService().fetchProducts() as Future<List<Product>>;
+    futureProducts = ProductService(2).fetchProducts() as Future<List<Product>>;
   }
 
   @override
@@ -53,18 +55,19 @@ class _FrenchCornerPageState extends State<FrenchCornerPage> {
                 }
 
                 // Filter products by store_id
-                final products = snapshot.data!.where((product) => product.storeId == 1).toList();
+                final products = snapshot.data!.where((product) => product.storeId == 2).toList();
 
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: products.length,
                   itemBuilder: (context, index) {
-                    final product = products[index];
+                    final  product = products[index];
+                   print(product.toString());
                     return ListTile(
                       title: Text(product.name),
                       subtitle: Text(product.description,style: TextStyle(fontSize: 13),),
-                      leading: Image.asset('images/French corner.jpg'),
+                      leading: Image.asset(''),
                       trailing:Text('\$${product.price}') ,
                       onTap: () {
                         Navigator.push(

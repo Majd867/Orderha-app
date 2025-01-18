@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:orderha/controller/logout_controller.dart';
-import 'create_account.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert'; // To handle JSON in Dart
+import 'package:shared_preferences/shared_preferences.dart'; // لقراءة الـ token من SharedPreferences
 import 'log_in.dart';
 import 'history.dart';
 
@@ -10,17 +11,65 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  CreateAccountPageState yourAccount = CreateAccountPageState();
-  final LogoutController _logoutController = LogoutController(); // Instantiate the controller
+  String firstName = '';
+  String lastName = '';
+  String phone = '';
+  String location = '';
+  String profileImageUrl = '';
+
+
+  // Method to fetch user data
+  Future<void> fetchUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken'); // استرجاع التوكن من SharedPreferences
+
+    if (token == null) {
+      throw Exception('User not authenticated');
+    }
+
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:8000/api/GetUser'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // If the response is successful
+      final data = json.decode(response.body);
+      print(data);
+      setState(() {
+        firstName = data['first_name'];
+        lastName = data['last_name'];
+        phone = data['phone'];
+        location = data['location'];
+        profileImageUrl = data['profile_image'] ?? ''; // If profile image is null
+      });
+    } else {
+      // If the response fails
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load user data')),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData(); // Fetch user data when the page loads
+  }
 
   void logOut(BuildContext context) async {
-    await _logoutController.logout(); // Use the controller to logout
+    // Placeholder for logout functionality
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Logged out successfully!')),
     );
-    Navigator.push(
+    // حذف التوكن من الـ SharedPreferences عند تسجيل الخروج
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('authToken'); // حذف التوكن
+    Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LogIn()),
+      MaterialPageRoute(builder: (context) => LogIn()), // الانتقال إلى صفحة تسجيل الدخول
     );
   }
 
@@ -65,10 +114,10 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.all(20.0),
               child: CircleAvatar(
                 radius: 80,
-                backgroundImage: yourAccount.profileImage != null
-                    ? FileImage(yourAccount.profileImage!) // Display selected image
+                backgroundImage: profileImageUrl.isNotEmpty
+                    ? NetworkImage(profileImageUrl) // If profile image exists
                     : null,
-                child: yourAccount.profileImage == null
+                child: profileImageUrl.isEmpty
                     ? Icon(
                   Icons.person,
                   size: 140,
@@ -86,7 +135,7 @@ class _ProfileState extends State<Profile> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  "Your First name: ${yourAccount.firstName}",
+                  "Your First name: $firstName",
                   style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.white,
@@ -103,7 +152,7 @@ class _ProfileState extends State<Profile> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  "Your Last name: ${yourAccount.lastName}",
+                  "Your Last name: $lastName",
                   style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.white,
@@ -120,7 +169,7 @@ class _ProfileState extends State<Profile> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  "Your Phone number: ${yourAccount.phone}",
+                  "Your Phone number: $phone",
                   style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.white,
@@ -137,7 +186,7 @@ class _ProfileState extends State<Profile> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  "Your Location: ",
+                  "Your Location: $location",
                   style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.white,

@@ -7,7 +7,6 @@ import 'package:orderha/model/loginModel.dart';
 import 'create_account.dart';
 import 'home.dart';
 
-
 CreateAccount createAccount = CreateAccount();
 
 class LogIn extends StatelessWidget {
@@ -34,7 +33,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final LoginController _loginController = LoginController(); // Instantiate the controller
+  final LoginController _loginController =
+      LoginController(); // Instantiate the controller
   String phone = '';
   String password = '';
   String _message = "Sign in";
@@ -46,7 +46,8 @@ class _LoginPageState extends State<LoginPage> {
         phone: phone,
         password: password,
       );
-      final response = await _loginController.login(request); // Use the controller to login
+      final response =
+          await _loginController.login(request); // Use the controller to login
 
       if (response.statusCode == 200) {
         setState(() {
@@ -59,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         final responseData = json.decode(response.body);
         setState(() {
-          _message = responseData['error'] ?? 'Failed to login. Please check your credentials and try again.';
+          _message = responseData['error'] ??
+              'Failed to login. Please check your credentials and try again.';
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(_message)),
@@ -67,8 +69,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Text(
                   style: TextStyle(
-                    fontSize: 15.0,
+                    fontSize: 14.0,
                     fontWeight: FontWeight.bold,
                   ),
                   _message,
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
             );
           },
           child: Text(
-              'I don\'t have an account? Sign up',
+            'I don\'t have an account? Sign up',
           ),
         ),
         SizedBox(

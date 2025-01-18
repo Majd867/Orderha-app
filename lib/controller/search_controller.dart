@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:orderha/model/SearchResult.dart';
 
 class SearchController {
-  final String apiUrl = "http://127.0.0.1:8000/api/Search";
+  final String apiUrl = "http://10.0.2.2:8000/api/Search";
 
   Future<List<SearchResult>> performSearch({
     required String query,
